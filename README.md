@@ -21,17 +21,17 @@ It will contain fluxes and magnitudes (normalized to the Kepler magnitude of the
 It will also contain error values for both flux and magnitude!!!
 
 TO USE THIS PROGRAM:
-(1) Be sure you have numpy, matplotlib, kplr, astropy, pyraf, and PyKE installed
---> if you don't, try 'pip install kplr' (for example)
---> PyKE is a bit more complicated: see http://keplergo.arc.nasa.gov/PyKE.shtml
-(2) Be sure you have 'lc_functions.py' saved in the same directory as this file
-(3) Download ALL the basis vectors and save them in a subdirectory called 'basisvectors'
---> get them here: https://archive.stsci.edu/kepler/cbv.html
-(4) Optional: make a mask (e.g., for eclipses) in real BJD units (Kepler time + 2454833)
---> see mask_kepcotrend.txt for an example
---> save the mask file in ~/.kplr/data/lightcurves/KICNUMBERHERE/.
---> if no mask file is found, the program will still work
-(5) Optional: tweak the parameters used in the kepcotrend task in 'lc_functions.py'.
---> for more info, see: http://keplergo.arc.nasa.gov/ContributedSoftwareKepcotrend.shtml
-(6) Change any settings below as necessary (KIC, home directory, etc.)
-(7) Type 'python makelc.py' and watch the magic happen
+1. Be sure you have numpy, matplotlib, kplr, astropy, pyraf, and PyKE installed
+  --> if you don't, try 'pip install kplr' (for example)
+  --> PyKE is a bit more complicated: see http://keplergo.arc.nasa.gov/PyKE.shtml
+2. Be sure you have 'lc_functions.py' saved in the same directory as this file
+3. Download ALL the basis vectors and save them in a subdirectory called 'basisvectors'
+  --> get them here: https://archive.stsci.edu/kepler/cbv.html
+4. Optional: make a mask (e.g., for eclipses) in real BJD units (Kepler time + 2454833)
+  --> see mask_kepcotrend.txt for an example
+  --> save the mask file in ~/.kplr/data/lightcurves/KICNUMBERHERE/.
+  --> if no mask file is found, the program will still work
+5. Optional: tweak the parameters used in the kepcotrend task in 'lc_functions.py'.
+  --> for more info, see: http://keplergo.arc.nasa.gov/ContributedSoftwareKepcotrend.shtml
+6. Change any settings below as necessary (KIC, home directory, etc.)
+7. Type 'python makelc.py' and watch the magic happen
