@@ -24,6 +24,7 @@ It will contain fluxes and magnitudes (normalized to the Kepler magnitude of the
 It will also contain error values for both flux and magnitude!!!
 
 TO USE THIS PROGRAM:
+
 1. Be sure you have numpy, matplotlib, kplr, astropy, pyraf, and PyKE installed
   --> if you don't, try 'pip install kplr' (for example)
   --> PyKE is a bit more complicated: see http://keplergo.arc.nasa.gov/PyKE.shtml
