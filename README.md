@@ -21,6 +21,10 @@ Breaks light curves into 'chunks' for use with Jerry Orosz's modeling program EL
 
 Some handy functions that are used in both programs above.
 
+### various .txt and .png files
+
+Examples outputs from the above.
+
 
 
 
