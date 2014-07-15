@@ -1,0 +1,4 @@
+*.pyc
+pyraf/*
+uparm/*
+login.cl

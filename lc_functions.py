@@ -8,6 +8,24 @@ Originally by Jean McKeever
 Edited and improved by Meredith Rawls
 '''
 
+# calculate orbital phase
+# times must be a list of observation times in the same units as BJD0
+# it returns 'phases': orbital phases from 0 to 1
+# it also returns 'phasedoubles': twice as long as 'phases' and now from 0 to 2
+def phasecalc(times, period=100, BJD0=2454833):
+	phases = []
+	cycles = []
+	for i in range(0, len(times)):
+		fracP = (times[i] - BJD0) / period
+		if fracP < 0:
+			phases.append(fracP % 1)
+			cycles.append(int(fracP))
+		else:
+			phases.append(fracP % 1)
+			cycles.append(int(fracP) + 1)
+		#print(fracP, phases[i])
+	return phases
+
 # remove long-term trends
 # uses a simple 7th-order polynomial by default
 # operates on one array at a time (e.g., after all quarters have been combined)

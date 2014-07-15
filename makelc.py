@@ -26,6 +26,7 @@ TO USE THIS PROGRAM:
 (1) Be sure you have numpy, matplotlib, kplr, astropy, pyraf, and PyKE installed
 --> if you don't, try 'pip install kplr' (for example)
 --> PyKE is a bit more complicated: see http://keplergo.arc.nasa.gov/PyKE.shtml
+--> you'll want to run 'mkiraf' in the working directory, too
 (2) Be sure you have 'lc_functions.py' saved in the same directory as this file
 (3) Download ALL the basis vectors and save them in a subdirectory called 'basisvectors'
 --> get them here: https://archive.stsci.edu/kepler/cbv.html
@@ -45,6 +46,7 @@ homedir = '/Users/Meredith/'
 cbvdir = 'basisvectors/'
 outfile = 'makelc_out.txt'
 maskfile = 'mask_kepcotrend.txt'
+plotaxes = [100, 1600, 9.6, 9.0]
 
 # Read in Kepler light curve data from MAST
 # For more info, see http://dan.iel.fm/kplr/#
@@ -154,7 +156,7 @@ for i in range(0,len(time_all_sap)):
 #model_all_plot_mag = -2.5*np.log10(model_all+10) + (kepmag - np.median(-2.5*np.log10(model_all+10)))
 ##
 # actually plot stuff already (in magnitudes)
-plt.axis([100, 1600, 9.6, 8.95])
+plt.axis(plotaxes)
 plt.plot(time_all_cbv, mag_all_cbv-0.2, color='k', linestyle='None', marker='.', label='CBV mag (offset)')
 plt.plot(time_all_sap, mag_all_sap, color='r', linestyle='None', marker='.', label='SAP mag') 
 #plt.plot(time_all_cbv, model_all_plot_mag-0.25, color='b', linestyle='None', marker='.', label='CBV model')
