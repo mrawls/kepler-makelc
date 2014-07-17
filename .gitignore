@@ -2,3 +2,5 @@
 pyraf/*
 uparm/*
 login.cl
+ELC*.txt
+lcfunctions.pyc
