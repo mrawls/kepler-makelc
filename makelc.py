@@ -16,6 +16,7 @@ carried out on BOTH light curves:
 - NaN values are deleted
 - each quarter is put on the same median flux level
 - the gaps between quarters are lined up nicely
+- the entire light curve is 'leveled out' via a 3rd-order polynomial
 Note there is no interpolation---every original timestamp is preserved.
 
 You will get a nice plot and an outfile (.txt), which you can specify below.
@@ -129,6 +130,10 @@ flux_all_cbv = np.concatenate(flux_cbv)
 flux_all_sap = np.concatenate(flux_sap)
 model_all = np.concatenate(model)
 ferr_all = np.concatenate(ferr)
+
+# Remove long-term trend ('level it out') with a 3rd-order polynomial
+time_all_cbv, flux_all_cbv = long_detrend(time_all_cbv, flux_all_cbv, order=3)
+time_all_sap, flux_all_sap = long_detrend(time_all_sap, flux_all_sap, order=3)
 
 # Put everything on a magnitude scale
 kepmag = np.mean(kepmag) # kepler magnitudes from file headers (should all be the same)

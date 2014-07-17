@@ -27,9 +27,9 @@ def phasecalc(times, period=100, BJD0=2454833):
 	return phases
 
 # remove long-term trends
-# uses a simple 7th-order polynomial by default
+# uses a simple 3rd-order polynomial by default
 # operates on one array at a time (e.g., after all quarters have been combined)
-def long_detrend(t, flux, order=7):
+def long_detrend(t, flux, order=3):
     model = np.polyfit(t, flux, order)
     fit = np.zeros(len(t))
     # apply the model coefficients to create the fit

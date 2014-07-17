@@ -104,6 +104,7 @@ yoffset = 0
 for idx in range(0, cyclecount):
 	f = open('ELC_lc'+str(idx)+'.txt')
 	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
+	f.close()
 	phases = phasecalc(times, period, BJD0_kep)
 	phase2s = []
 	for phase in phases: phase2s.append(phase + 1)
