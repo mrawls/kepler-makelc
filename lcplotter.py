@@ -45,8 +45,8 @@ primary_phasemin = 0.985 #0.48
 primary_phasemax = 1.015 #0.52
 secondary_phasemin = 0.699 #0.194
 secondary_phasemax = 0.729 #0.234
-phasemin = 0
-phasemax = 2
+phasemin = 0.2
+phasemax = 1.8
 magdim = 9.54
 magdimzoom = 9.74
 magbright = 9.205
@@ -81,6 +81,8 @@ ax1.xaxis.set_ticks_position('bottom')
 ax1.yaxis.set_ticks_position('left')
 #ax1.set_xticklabels([])
 
+# NEED TO ADD: little cartoon stars eclipsing each other in the eclipse zoom panels.
+
 # Secondary eclipse zoom & offset
 ax3 = plt.subplot2grid((14,2),(10,0), rowspan=5)
 plt.subplots_adjust(wspace = 0.0001, hspace=0.0001)
@@ -98,6 +100,9 @@ for i in range(0, cyclecount):
 	for phase in phases: phase2s.append(phase + 1)
 	plt.plot(phases, mags+offset, color=yel, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
+# Little circles
+plt.scatter(0.725, 9.60, s=4000, facecolors=red, edgecolors=red)
+plt.scatter(0.725, 9.64, s=3500, facecolors=yel, edgecolors=yel)
 
 # Primary eclipse zoom & offset
 ax4 = plt.subplot2grid((14,2),(10,1), rowspan=5)
@@ -117,11 +122,16 @@ for i in range(0, cyclecount):
 	plt.plot(phase2s, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
 ax4.set_yticklabels([])
+plt.scatter(1.011, 9.64, s=3500, facecolors=yel, edgecolors=yel)
+plt.scatter(1.011, 9.60, s=4000, facecolors=red, edgecolors=red)
+
 
 plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=24)
 plt.figtext(0.05, 0.5, 'Kepler Magnitude', ha='center', va='center', rotation='vertical', size=24)
 plt.figtext(0.135, 0.13, 'Secondary \n (offset)', size=20)
 plt.figtext(0.525, 0.13, 'Primary \n (offset)', size=20)
 plt.figtext(0.135, 0.42, 'Folded', size=20)
+#plt.scatter(0.4, 0.1, s=np.pi*(np.power(0.5,2)), c='#e34a33')
+#plt.Circle((0.4, 0.1), 0.1, ec='#e34a33', fc='#e34a33')
 
 plt.show()
