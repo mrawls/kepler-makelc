@@ -142,7 +142,6 @@ merr_all_sap = 1.0857 * ferr_all / flux_all_sap
 mag_all_cbv = -2.5*np.log10(flux_all_cbv) + (kepmag - np.median(-2.5*np.log10(flux_all_cbv)))
 merr_all_cbv = 1.0857 * ferr_all / flux_all_cbv
 
-# TODO: REMOVE LONG-TERM TREND OVER ALL THE QUARTERS W/O INTERPOLATING ??
 # TODO: SOMEHOW MANUALLY REMOVE THE REMAINING ARTIFACTS/BLIPS ??
 
 # Write out all light curve info to a file
