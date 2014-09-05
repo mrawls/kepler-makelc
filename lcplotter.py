@@ -122,8 +122,8 @@ for i in range(0, cyclecount):
 	plt.plot(phase2s, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
 ax4.set_yticklabels([])
-plt.scatter(1.011, 9.64, s=3500, facecolors=yel, edgecolors=yel)
-plt.scatter(1.011, 9.60, s=4000, facecolors=red, edgecolors=red)
+plt.scatter(1.011, 9.60, s=3500, facecolors=yel, edgecolors=yel)
+plt.scatter(1.011, 9.64, s=4000, facecolors=red, edgecolors=red)
 
 
 plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=24)
