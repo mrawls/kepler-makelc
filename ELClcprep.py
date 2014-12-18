@@ -20,6 +20,8 @@ We assume the BJD0 corresponds to the midpoint of the primary (deepest) eclipse.
 
 You need to customize some variables below for your favorite KIC star.
 This assumes you have previously run 'makelc.py' or otherwise have a textfile light curve.
+NOTE: it may create an empty file after the final chunk
+(if there are 8 actual chunks it may create file 9) ... sorry
 '''
 
 ##### SET IMPORTANT THINGS HERE #####
