@@ -19,10 +19,10 @@ Everything is done in magnitudes.
 We assume the BJD0 corresponds to the midpoint of the primary (deepest) eclipse.
 
 You need to customize some variables below for your favorite KIC star.
-This assumes you have previously run 'makelc.py'.
+This assumes you have previously run 'makelc.py' or otherwise have a textfile light curve.
 '''
 
-##### BEGIN SET IMPORTANT THINGS HERE #####
+##### SET IMPORTANT THINGS HERE #####
 KIC = '9246715'
 period = 171.277967
 BJD0 = 2455170.514777
@@ -31,15 +31,21 @@ BJD0 = 2455170.514777
 # You MUST choose phasemin < 1 and phasemax > 1; you likely want phasemax = phasemin + 1.
 phasemin = 0.6
 phasemax = 1.6
-infile = 'makelc_out.txt' # must be the file written by 'makelc.py'
+#infile = 'makelc_out.txt' # typically the file written by 'makelc.py'
+infile = 'KIC_9246715_201408_Patrick.txt' # (or not)
 plotaxes = [phasemin, phasemax, 9.4, 8.4]
-bigoutfile = 'ELC_lcall.txt'
+#bigoutfile = 'ELC_lcall.txt'
+bigoutfile = 'ELC_lcall_Patrick.txt'
+outstub = 'ELC_Patrick_lc'
 
 # Read in light curve
 # The columns in 'infile' are as follows, from 'makelc.py':
 # Kepler time, SAP flux, flux err, SAP mag, mag err, CBV flux, CBV mag, CBV model
 f = open(infile)
-times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,3,4), unpack=True)
+if infile == 'makelc_out.txt': # assume special makelc.py column assignments
+	times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,3,4), unpack=True)
+else: # assume time, mag, merr are in first three columns
+	times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,1,2), unpack=True)
 f.close()
 
 # Write the full light curve to an ELC-useable file
@@ -57,36 +63,36 @@ for phase in phases: phase2s.append(phase + 1)
 # If the 'chunk' files already exist, skip ahead and make a plot.
 # If the 'chunk' files don't exist yet, create them.
 try:
-	test = open('ELC_lc0.txt')
+	test = open(outstub+'0.txt')
 	test.close()
-	print('\'ELC_lc0.txt\' exists! Skipping ahead to plot this and the other chunks.')
+	print('\''+outstub+'0.txt\' exists! Skipping ahead to plot this and the other chunks.')
 	for i in range(0,100):
-		try: test = open('ELC_lc'+str(i)+'.txt'); test.close()
+		try: test = open(outstub+str(i)+'.txt'); test.close()
 		except: cyclecount = i-1; break
 except:
-	print('\'ELC_lc0.txt\' does not exist. Creating files...')
+	print('\''+outstub+'0.txt\' does not exist. Creating files...')
 	# The 'cycle' variable keeps track of the filename for each 'chunk.'
 	# We assume that phasemin < 1 and phasemax > 1. If not... good luck.
 	## loop through phases 0-1
 	cycle = 0
-	f = open('ELC_lc0.txt', 'a') #append, don't overwrite. this is important.
+	f = open(outstub+'0.txt', 'a') #append, don't overwrite. this is important.
 	for i, (phase, time, mag, merr) in enumerate(zip(phases[:-1], times[:-1], mags[:-1], merrs[:-1])):
 		if phase > phasemin: print(time, mag, merr, file=f)
 		if phases[i+1] < phase: #if we go from 0.999 back to 0.000, we're done
 			f.close()
 			cycle += 1
-			f = open('ELC_lc'+str(cycle)+'.txt', 'a')
+			f = open(outstub+str(cycle)+'.txt', 'a')
 	f.close()
 	## loop through phases 1-2
 	if phase2s[0] > phasemax: cycle = -1 #nothing here, move along
 	else: cycle = 0 #actually start here
-	f = open('ELC_lc0.txt', 'a')
+	f = open(outstub+'0.txt', 'a')
 	for i, (phase2, time, mag, merr) in enumerate(zip(phase2s[:-1], times[:-1], mags[:-1], merrs[:-1])):
 		if phase2 < phasemax: print(time, mag, merr, file=f)
 		if phase2s[i+1] < phase2: #if we go from 1.999 back to 1.000, we're done
 			f.close()
 			cycle += 1
-			f = open('ELC_lc'+str(cycle)+'.txt', 'a')
+			f = open(outstub+str(cycle)+'.txt', 'a')
 	f.close()
 	cyclecount = cycle
 
@@ -102,7 +108,7 @@ except:
 plt.axis(plotaxes)
 yoffset = 0
 for idx in range(0, cyclecount):
-	f = open('ELC_lc'+str(idx)+'.txt')
+	f = open(outstub+str(idx)+'.txt')
 	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
 	f.close()
 	phases = phasecalc(times, period, BJD0_kep)
