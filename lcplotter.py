@@ -12,7 +12,9 @@ You'd better run 'makelc.py' and 'ELClcprep.py' first !!
 KIC = '9246715'
 period = 171.277967
 BJD0 = 2455170.514777
-infile = 'makelc_out.txt' # must be the file written by 'makelc.py'
+#infile = 'makelc_out.txt' # typically the file written by 'makelc.py'
+infile = 'ELC_lcall_Patrick.txt'
+instub = 'ELC_Patrick_lc'
 red = '#e34a33' # red, star 1
 yel = '#fdbb84' # yellow, star 2
 
@@ -20,16 +22,17 @@ yel = '#fdbb84' # yellow, star 2
 # The columns in 'infile' are as follows, from 'makelc.py':
 # Kepler time, SAP flux, flux err, SAP mag, mag err, CBV flux, CBV mag, CBV model
 f = open(infile)
-times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,3,4), unpack=True)
+#times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,3,4), unpack=True)
+times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,1,2), unpack=True)
 f.close()
 
-# Read in light curve chunks
+# Read in light curve chunks	
 try:
-	test = open('ELC_lc0.txt')
+	test = open(instub+'0.txt')
 	test.close()
 	for i in range(0,100):
-		try: test = open('ELC_lc'+str(i)+'.txt'); test.close()
-		except: cyclecount = i-1; break
+		try: test = open(instub+str(i)+'.txt'); test.close()
+		except: cyclecount = i; break
 except:
 	print('Sorry, no chunk files found.')
 	cyclecount = 0
@@ -48,8 +51,9 @@ secondary_phasemax = 0.743 #0.729 #0.234
 phasemin = 0.5
 phasemax = 1.5
 magdim = 9.54
-magdimzoom = 9.74
+magdimzoom = 9.78
 magbright = 9.205
+magbrightzoom = 9.24
 timemin = 100
 timemax = 1600
 
@@ -88,7 +92,7 @@ ax1.yaxis.set_ticks_position('left')
 # Secondary eclipse zoom & offset
 ax3 = plt.subplot2grid((14,2),(10,0), rowspan=5)
 plt.subplots_adjust(wspace = 0.0001, hspace=0.0001)
-plt.axis([secondary_phasemin, secondary_phasemax, magdimzoom, magbright])
+plt.axis([secondary_phasemin, secondary_phasemax, magdimzoom, magbrightzoom])
 ax3.xaxis.set_major_locator(IndexLocator(0.01, 0.68))
 ax3.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 ax3.spines['top'].set_visible(False)
@@ -96,7 +100,7 @@ ax3.xaxis.set_ticks_position('bottom')
 #ax3.yaxis.set_major_locator(IndexLocator(0.1, 9.8))
 offset = 0
 for i in range(0, cyclecount):
-	f = open('ELC_lc'+str(i)+'.txt')
+	f = open(instub+str(i)+'.txt')
 	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
 	f.close()
 	phases = phasecalc(times, period, BJD0_kep)
@@ -105,12 +109,12 @@ for i in range(0, cyclecount):
 	plt.plot(phases, mags+offset, color=yel, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
 # Little circles
-plt.scatter(0.73, 9.58, s=4000, facecolors=red, edgecolors=red)
-plt.scatter(0.73, 9.64, s=2000, facecolors=yel, edgecolors=yel)
+plt.scatter(0.73, 9.61, s=4000, facecolors=red, edgecolors=red)
+plt.scatter(0.73, 9.67, s=2000, facecolors=yel, edgecolors=yel)
 
 # Primary eclipse zoom & offset
 ax4 = plt.subplot2grid((14,2),(10,1), rowspan=5)
-plt.axis([primary_phasemin, primary_phasemax, magdimzoom, magbright])
+plt.axis([primary_phasemin, primary_phasemax, magdimzoom, magbrightzoom])
 ax4.xaxis.set_major_locator(IndexLocator(0.01, 0.98))
 ax4.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 ax4.spines['top'].set_visible(False)
@@ -118,7 +122,7 @@ ax4.xaxis.set_ticks_position('bottom')
 #ax4.yaxis.set_major_locator(IndexLocator(0.1, 9.8))
 offset = 0
 for i in range(0, cyclecount):
-	f = open('ELC_lc'+str(i)+'.txt')
+	f = open(instub+str(i)+'.txt')
 	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
 	f.close()
 	phases = phasecalc(times, period, BJD0_kep)
@@ -128,15 +132,17 @@ for i in range(0, cyclecount):
 	plt.plot(phase2s, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
 ax4.set_yticklabels([])
-plt.scatter(1.02, 9.58, s=2000, facecolors=yel, edgecolors=yel)
-plt.scatter(1.02, 9.64, s=4000, facecolors=red, edgecolors=red)
+# Little circles
+plt.scatter(1.02, 9.61, s=2000, facecolors=yel, edgecolors=yel)
+plt.scatter(1.02, 9.67, s=4000, facecolors=red, edgecolors=red)
 
 
-plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=24)
-plt.figtext(0.05, 0.5, 'Kepler Magnitude', ha='center', va='center', rotation='vertical', size=24)
-plt.figtext(0.135, 0.13, 'Secondary \n (offset)', size=20)
-plt.figtext(0.525, 0.13, 'Primary \n (offset)', size=20)
-plt.figtext(0.135, 0.42, 'Folded', size=20)
+plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=28)
+plt.figtext(0.05, 0.5, 'Kepler Magnitude', ha='center', va='center', rotation='vertical', size=28)
+plt.figtext(0.135, 0.13, 'Secondary \n (offset)', size=24)
+plt.figtext(0.525, 0.13, 'Primary \n (offset)', size=24)
+plt.figtext(0.135, 0.40, 'Folded', size=24)
+plt.figtext(0.135, 0.685, 'Unfolded', size=24)
 #plt.scatter(0.4, 0.1, s=np.pi*(np.power(0.5,2)), c='#e34a33')
 #plt.Circle((0.4, 0.1), 0.1, ec='#e34a33', fc='#e34a33')
 
