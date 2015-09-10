@@ -6,12 +6,10 @@ from lc_functions import phasecalc
 by Meredith Rawls
 July 2014
 
-Takes light curve data written by 'makelc.py' and makes a set of text files
+Takes light curve three-column text file (time, mag, err) and makes a set of text files
 that will work with ELC.
-ELC is Jerry Orosz's "Eclipsing Light Curve" code for EBs. It is a Fortran black box
-of doom, but it does amazing things if you feed and care for it.
 
-Two main results: (1) a file with all the light curve data, and (2) a set of files
+Two main outputs: (1) a file with all the light curve data, and (2) a set of files
 with light curve data containing one primary and one secondary eclipse each. The
 last of these 'chunk' files will be empty because loops are annoying (sorry).
 Also it makes a plot, because plots.
@@ -19,24 +17,22 @@ Everything is done in magnitudes.
 We assume the BJD0 corresponds to the midpoint of the primary (deepest) eclipse.
 
 You need to customize some variables below for your favorite KIC star.
-This assumes you have previously run 'makelc.py' or otherwise have a textfile light curve.
+
 NOTE: it may create an empty file after the final chunk
 (if there are 8 actual chunks it may create file 9) ... sorry
 '''
 
 ##### SET IMPORTANT THINGS HERE #####
-KIC = '9246715'
-period = 171.277967
-BJD0 = 2455170.514777
+KIC = '7037405' #'9246715'
+period = 207.150524 #for 7037405        #period = 171.277967 #for 9246715
+BJD0 = 2454905.625221 #for 7037405      #BJD0 = 2455170.514777 #for 9246715 
 # Choose PHASEMIN and PHASEMAX so that a primary & secondary eclipse fall neatly near
 # the center of this range.
 # You MUST choose phasemin < 1 and phasemax > 1; you likely want phasemax = phasemin + 1.
 phasemin = 0.6
 phasemax = 1.6
-#infile = 'makelc_out.txt' # typically the file written by 'makelc.py'
-infile = 'KIC_9246715_201408_Patrick.txt' # (or not)
-plotaxes = [phasemin, phasemax, 9.4, 8.4]
-#bigoutfile = 'ELC_lcall.txt'
+#infile = 'makelc_out.txt' # possibly the file written by 'makelc.py'?
+infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
 bigoutfile = 'ELC_lcall_Patrick.txt'
 outstub = 'ELC_Patrick_lc'
 
@@ -49,6 +45,8 @@ if infile == 'makelc_out.txt': # assume special makelc.py column assignments
 else: # assume time, mag, merr are in first three columns
 	times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,1,2), unpack=True)
 f.close()
+
+plotaxes = [phasemin, phasemax, np.max(mags)+0.1, np.min(mags)-0.8]
 
 # Write the full light curve to an ELC-useable file
 f = open(bigoutfile, 'w')

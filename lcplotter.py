@@ -4,16 +4,17 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import IndexLocator, FormatStrFormatter
 from lc_functions import phasecalc
 '''
-Make a nice plot of an RGEB Kepler light curve for a paper.
-You'd better run 'makelc.py' and 'ELClcprep.py' first !!
+Makes a nice plot of an RGEB Kepler light curve for a paper.
+You will want to run 'ELClcprep.py' first.
 '''
 
 # Important starting info
-KIC = '9246715'
-period = 171.277967
-BJD0 = 2455170.514777
+KIC = '7037405' #'9246715'
+period = 207.108 #207.150524 #for 7037405        #period = 171.277967 #for 9246715
+BJD0 = 2454905.625221 #for 7037405      #BJD0 = 2455170.514777 #for 9246715 
 #infile = 'makelc_out.txt' # typically the file written by 'makelc.py'
-infile = 'ELC_lcall_Patrick.txt'
+#infile = 'ELC_lcall_Patrick.txt'
+infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
 instub = 'ELC_Patrick_lc'
 red = '#e34a33' # red, star 1
 yel = '#fdbb84' # yellow, star 2
@@ -46,14 +47,14 @@ for phase in phases: phase2s.append(phase + 1)
 # System-specific plot parameters
 primary_phasemin = 0.97 #0.985 #0.48
 primary_phasemax = 1.03 #1.015 #0.52
-secondary_phasemin = 0.683 #0.699 #0.194
-secondary_phasemax = 0.743 #0.729 #0.234
-phasemin = 0.5
-phasemax = 1.5
-magdim = 9.54
-magdimzoom = 9.78
-magbright = 9.205
-magbrightzoom = 9.24
+secondary_phasemin = 0.368 #0.699 #0.194
+secondary_phasemax = 0.428 #0.729 #0.234
+phasemin = 0.2
+phasemax = 1.2
+magdim = 11.967
+magdimzoom = 12.19
+magbright = 11.862
+magbrightzoom = 11.85
 timemin = 100
 timemax = 1600
 
@@ -93,7 +94,7 @@ ax1.yaxis.set_ticks_position('left')
 ax3 = plt.subplot2grid((14,2),(10,0), rowspan=5)
 plt.subplots_adjust(wspace = 0.0001, hspace=0.0001)
 plt.axis([secondary_phasemin, secondary_phasemax, magdimzoom, magbrightzoom])
-ax3.xaxis.set_major_locator(IndexLocator(0.01, 0.68))
+ax3.xaxis.set_major_locator(IndexLocator(0.01, 0.37))
 ax3.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 ax3.spines['top'].set_visible(False)
 ax3.xaxis.set_ticks_position('bottom')
@@ -109,8 +110,8 @@ for i in range(0, cyclecount):
 	plt.plot(phases, mags+offset, color=yel, marker='.', ls='None', ms=5, mew=0)
 	offset += 0.03
 # Little circles
-plt.scatter(0.73, 9.61, s=4000, facecolors=red, edgecolors=red)
-plt.scatter(0.73, 9.67, s=2000, facecolors=yel, edgecolors=yel)
+#plt.scatter(0.73, 9.61, s=4000, facecolors=red, edgecolors=red)
+#plt.scatter(0.73, 9.67, s=4000, facecolors=yel, edgecolors=yel)
 
 # Primary eclipse zoom & offset
 ax4 = plt.subplot2grid((14,2),(10,1), rowspan=5)
@@ -133,17 +134,15 @@ for i in range(0, cyclecount):
 	offset += 0.03
 ax4.set_yticklabels([])
 # Little circles
-plt.scatter(1.02, 9.61, s=2000, facecolors=yel, edgecolors=yel)
-plt.scatter(1.02, 9.67, s=4000, facecolors=red, edgecolors=red)
+#plt.scatter(1.02, 9.61, s=4000, facecolors=yel, edgecolors=yel)
+#plt.scatter(1.02, 9.67, s=4000, facecolors=red, edgecolors=red)
 
 
 plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=28)
 plt.figtext(0.05, 0.5, 'Kepler Magnitude', ha='center', va='center', rotation='vertical', size=28)
-plt.figtext(0.135, 0.13, 'Secondary \n (offset)', size=24)
-plt.figtext(0.525, 0.13, 'Primary \n (offset)', size=24)
+plt.figtext(0.135, 0.12, 'Secondary \n (offset)', size=24)
+plt.figtext(0.525, 0.12, 'Primary \n (offset)', size=24)
 plt.figtext(0.135, 0.40, 'Folded', size=24)
 plt.figtext(0.135, 0.685, 'Unfolded', size=24)
-#plt.scatter(0.4, 0.1, s=np.pi*(np.power(0.5,2)), c='#e34a33')
-#plt.Circle((0.4, 0.1), 0.1, ec='#e34a33', fc='#e34a33')
 
 plt.show()
