@@ -9,15 +9,36 @@ You will want to run 'ELClcprep.py' first.
 '''
 
 # Important starting info
-KIC = '7037405' #'9246715'
-period = 207.108 #207.150524 #for 7037405        #period = 171.277967 #for 9246715
-BJD0 = 2454905.625221 #for 7037405      #BJD0 = 2455170.514777 #for 9246715 
-#infile = 'makelc_out.txt' # typically the file written by 'makelc.py'
-#infile = 'ELC_lcall_Patrick.txt'
-infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
-instub = 'ELC_Patrick_lc'
+#infile = 'makelc_out.txt'  # often the file written by 'makelc.py'
+#instub = 'ELC_lc'          # beginning part of each of the 'chunk' files
+
+# 946715
+KIC = '9246715'; period = 171.277967; BJD0 = 2455170.514777
+infile = '../../RG_light_curves/9246715/KIC_9246715_201408_Patrick.txt'
+instub = '../../RG_light_curves/9246715/ELC_Patrick_lc'
+primary_phasemin = 0.97; primary_phasemax = 1.03
+secondary_phasemin = 0.685; secondary_phasemax = 0.745
+phasemin = 0.5; phasemax = 1.5
+magdim = 9.54; magbright = 9.21
+magdimzoom = 9.79; magbrightzoom = 9.21
+timemin = 100; timemax = 1600
+pristarcirclesize = 4000; secstarcirclesize = 4000
+
+# 7037405
+#KIC = '7037405'; period = 207.108; BJD0 = 2454905.625221
+#infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
+#instub = '../../RG_light_curves/7037405/ELC_Patrick_lc'
+#primary_phasemin = 0.97; primary_phasemax = 1.03
+#secondary_phasemin = 0.368; secondary_phasemax = 0.428
+#phasemin = 0.2; phasemax = 1.2
+#magdim = 11.967; magbright = 11.862
+#magdimzoom = 12.19; magbrightzoom = 11.85
+#timemin = 100; timemax = 1600
+#pristarcirclesize = 4000; secstarcirclesize = 4000
+
 red = '#e34a33' # red, star 1
 yel = '#fdbb84' # yellow, star 2
+zoommagspace = 0.03
 
 # Read in full light curve
 # The columns in 'infile' are as follows, from 'makelc.py':
@@ -27,36 +48,23 @@ f = open(infile)
 times, mags, merrs = np.loadtxt(f, comments='#', dtype=np.float64, usecols=(0,1,2), unpack=True)
 f.close()
 
-# Read in light curve chunks	
+# Read in light curve chunks
+# This assumes you have chunk0 - chunkN with no gaps  
 try:
-	test = open(instub+'0.txt')
-	test.close()
-	for i in range(0,100):
-		try: test = open(instub+str(i)+'.txt'); test.close()
-		except: cyclecount = i; break
+    test = open(instub+'0.txt')
+    test.close()
+    for i in range(0,100):
+        try: test = open(instub+str(i)+'.txt'); test.close()
+        except: cyclecount = i; break
 except:
-	print('Sorry, no chunk files found.')
-	cyclecount = 0
+    print('Skipping chunk files, no chunk0 file found.')
+    cyclecount = 0
 
 # Calculate orbital phases (0-1), and make a 'phase2s' list (1-2).
 BJD0_kep = BJD0 - 2454833 
 phases = phasecalc(times, period, BJD0_kep)
 phase2s = []
 for phase in phases: phase2s.append(phase + 1)
-
-# System-specific plot parameters
-primary_phasemin = 0.97 #0.985 #0.48
-primary_phasemax = 1.03 #1.015 #0.52
-secondary_phasemin = 0.368 #0.699 #0.194
-secondary_phasemax = 0.428 #0.729 #0.234
-phasemin = 0.2
-phasemax = 1.2
-magdim = 11.967
-magdimzoom = 12.19
-magbright = 11.862
-magbrightzoom = 11.85
-timemin = 100
-timemax = 1600
 
 # Folded full light curve
 ax2 = plt.subplot2grid((14,2),(5,0), colspan=2, rowspan=4)
@@ -90,6 +98,17 @@ ax1.xaxis.set_ticks_position('bottom')
 ax1.yaxis.set_ticks_position('left')
 #ax1.set_xticklabels([])
 
+# Option to plot vertical lines at certain timestamps
+# (to visually isolate one spacecraft orientation, for instance)
+#plt.axvline(169)
+#plt.axvline(257)
+#plt.axvline(538)
+#plt.axvline(628)
+#plt.axvline(906)
+#plt.axvline(999)
+#plt.axvline(1273)
+#plt.axvline(1370)
+
 # Secondary eclipse zoom & offset
 ax3 = plt.subplot2grid((14,2),(10,0), rowspan=5)
 plt.subplots_adjust(wspace = 0.0001, hspace=0.0001)
@@ -101,17 +120,17 @@ ax3.xaxis.set_ticks_position('bottom')
 #ax3.yaxis.set_major_locator(IndexLocator(0.1, 9.8))
 offset = 0
 for i in range(0, cyclecount):
-	f = open(instub+str(i)+'.txt')
-	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
-	f.close()
-	phases = phasecalc(times, period, BJD0_kep)
-	phase2s = []
-	for phase in phases: phase2s.append(phase + 1)
-	plt.plot(phases, mags+offset, color=yel, marker='.', ls='None', ms=5, mew=0)
-	offset += 0.03
+    f = open(instub+str(i)+'.txt')
+    times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
+    f.close()
+    phases = phasecalc(times, period, BJD0_kep)
+    phase2s = []
+    for phase in phases: phase2s.append(phase + 1)
+    plt.plot(phases, mags+offset, color=yel, marker='.', ls='None', ms=5, mew=0)
+    offset += zoommagspace
 # Little circles
-#plt.scatter(0.73, 9.61, s=4000, facecolors=red, edgecolors=red)
-#plt.scatter(0.73, 9.67, s=4000, facecolors=yel, edgecolors=yel)
+plt.scatter(secondary_phasemax-0.01, magdimzoom-0.17, s=pristarcirclesize, facecolors=red, edgecolors=red)
+plt.scatter(secondary_phasemax-0.01, magdimzoom-0.11, s=secstarcirclesize, facecolors=yel, edgecolors=yel)
 
 # Primary eclipse zoom & offset
 ax4 = plt.subplot2grid((14,2),(10,1), rowspan=5)
@@ -123,19 +142,19 @@ ax4.xaxis.set_ticks_position('bottom')
 #ax4.yaxis.set_major_locator(IndexLocator(0.1, 9.8))
 offset = 0
 for i in range(0, cyclecount):
-	f = open(instub+str(i)+'.txt')
-	times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
-	f.close()
-	phases = phasecalc(times, period, BJD0_kep)
-	phase2s = []
-	for phase in phases: phase2s.append(phase + 1)
-	plt.plot(phases, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
-	plt.plot(phase2s, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
-	offset += 0.03
+    f = open(instub+str(i)+'.txt')
+    times, mags, merrs = np.loadtxt(f, comments='#', usecols=(0,1,2), unpack=True)
+    f.close()
+    phases = phasecalc(times, period, BJD0_kep)
+    phase2s = []
+    for phase in phases: phase2s.append(phase + 1)
+    plt.plot(phases, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
+    plt.plot(phase2s, mags+offset, color=red, marker='.', ls='None', ms=5, mew=0)
+    offset += zoommagspace
 ax4.set_yticklabels([])
 # Little circles
-#plt.scatter(1.02, 9.61, s=4000, facecolors=yel, edgecolors=yel)
-#plt.scatter(1.02, 9.67, s=4000, facecolors=red, edgecolors=red)
+plt.scatter(primary_phasemax-0.01, magdimzoom-0.17, s=secstarcirclesize, facecolors=yel, edgecolors=yel)
+plt.scatter(primary_phasemax-0.01, magdimzoom-0.11, s=pristarcirclesize, facecolors=red, edgecolors=red)
 
 
 plt.figtext(0.5, 0.04, 'Orbital Phase', ha='center', va='center', size=28)
