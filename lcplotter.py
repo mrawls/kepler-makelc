@@ -13,28 +13,28 @@ You will want to run 'ELClcprep.py' first.
 #instub = 'ELC_lc'          # beginning part of each of the 'chunk' files
 
 # 946715
-KIC = '9246715'; period = 171.277967; BJD0 = 2455170.514777
-infile = '../../RG_light_curves/9246715/KIC_9246715_201408_Patrick.txt'
-instub = '../../RG_light_curves/9246715/ELC_Patrick_lc'
-primary_phasemin = 0.97; primary_phasemax = 1.03
-secondary_phasemin = 0.685; secondary_phasemax = 0.745
-phasemin = 0.5; phasemax = 1.5
-magdim = 9.54; magbright = 9.21
-magdimzoom = 9.79; magbrightzoom = 9.21
-timemin = 100; timemax = 1600
-pristarcirclesize = 4000; secstarcirclesize = 4000
-
-# 7037405
-#KIC = '7037405'; period = 207.108; BJD0 = 2454905.625221
-#infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
-#instub = '../../RG_light_curves/7037405/ELC_Patrick_lc'
+#KIC = '9246715'; period = 171.277967; BJD0 = 2455170.514777
+#infile = '../../RG_light_curves/9246715/KIC_9246715_201408_Patrick.txt'
+#instub = '../../RG_light_curves/9246715/ELC_Patrick_lc'
 #primary_phasemin = 0.97; primary_phasemax = 1.03
-#secondary_phasemin = 0.368; secondary_phasemax = 0.428
-#phasemin = 0.2; phasemax = 1.2
-#magdim = 11.967; magbright = 11.862
-#magdimzoom = 12.19; magbrightzoom = 11.85
+#secondary_phasemin = 0.685; secondary_phasemax = 0.745
+#phasemin = 0.5; phasemax = 1.5
+#magdim = 9.54; magbright = 9.21
+#magdimzoom = 9.79; magbrightzoom = 9.21
 #timemin = 100; timemax = 1600
 #pristarcirclesize = 4000; secstarcirclesize = 4000
+
+# 7037405
+KIC = '7037405'; period = 207.108; BJD0 = 2454905.625221
+infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
+instub = '../../RG_light_curves/7037405/ELC_Patrick_lc'
+primary_phasemin = 0.97; primary_phasemax = 1.03
+secondary_phasemin = 0.368; secondary_phasemax = 0.428
+phasemin = 0.2; phasemax = 1.2
+magdim = 11.967; magbright = 11.862
+magdimzoom = 12.19; magbrightzoom = 11.85
+timemin = 100; timemax = 1600
+pristarcirclesize = 4000; secstarcirclesize = 500
 
 red = '#e34a33' # red, star 1
 yel = '#fdbb84' # yellow, star 2
