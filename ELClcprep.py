@@ -23,18 +23,23 @@ NOTE: it may create an empty file after the final chunk
 '''
 
 ##### SET IMPORTANT THINGS HERE #####
-KIC = '7037405' #'9246715'
-period = 207.150524 #for 7037405        #period = 171.277967 #for 9246715
-BJD0 = 2454905.625221 #for 7037405      #BJD0 = 2455170.514777 #for 9246715 
+#KIC = '7037405' #'9246715'
+#period = 207.150524 #for 7037405        #period = 171.277967 #for 9246715
+#BJD0 = 2454905.625221 #for 7037405      #BJD0 = 2455170.514777 #for 9246715 
+#KIC = '8702921'; period = 19.38446; BJD0 = 2454970.2139
+KIC = '9291629'; period = 20.68639; BJD0 = 2454966.882
+#KIC = '3955867'; period = 33.65685; BJD0 = 2454960.8989
+#KIC = '10001167'; period = 120.3903; BJD0 = 2454957.682
+#KIC = '5786154'; period = 197.9182; BJD0 = 2455162.6140
 # Choose PHASEMIN and PHASEMAX so that a primary & secondary eclipse fall neatly near
 # the center of this range.
 # You MUST choose phasemin < 1 and phasemax > 1; you likely want phasemax = phasemin + 1.
 phasemin = 0.6
 phasemax = 1.6
 #infile = 'makelc_out.txt' # possibly the file written by 'makelc.py'?
-infile = '../../RG_light_curves/7037405/KIC_7037405-phot_transit_only.txt'
-bigoutfile = 'ELC_lcall_Patrick.txt'
-outstub = 'ELC_Patrick_lc'
+infile =     '../../RG_light_curves/9291629/KIC_9291629_LC_mag_Q017.txt'
+bigoutfile = '../../RG_light_curves/9291629/ELClcprep_out.txt'
+outstub =    '../../RG_light_curves/9291629/lcchunk'
 
 # Read in light curve
 # The columns in 'infile' are as follows, from 'makelc.py':
@@ -55,7 +60,7 @@ for time, mag, merr in zip(times, mags, merrs):
 f.close()
 
 # Calculate orbital phases (0-1), and make a 'phase2s' list (1-2).
-BJD0_kep = BJD0 - 2454833 
+BJD0_kep = BJD0 - 2454833. 
 phases = phasecalc(times, period, BJD0_kep)
 phase2s = []
 for phase in phases: phase2s.append(phase + 1)
